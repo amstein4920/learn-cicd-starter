@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"net/http"
 	"testing"
 )
@@ -11,8 +12,8 @@ func TestGetAPIKeyMalformedt(t *testing.T) {
 		t.Fatal(err)
 	}
 	req.Header.Set("Authorization", "Apikeyabc123")
-	authResult, err := GetAPIKey(req.Header)
-	if err != nil {
-		t.Fatalf("expected: %v, got: %v", "", authResult)
+	_, err = GetAPIKey(req.Header)
+	if err == nil {
+		t.Fatalf("expected: %v, got: %v", errors.New("malformed authorization header"), err)
 	}
 }
